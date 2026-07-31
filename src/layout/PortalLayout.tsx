@@ -21,7 +21,7 @@ export default function PortalLayout({
 
   const { authenticated, logout } = useAuth();
 
-  const [comunidad, setComunidad] = useState("andalucia");
+  const [comunidad, setComunidad] = useState("canarias");
 
   return (
     <LayoutContext.Provider value={{ fondo, setFondo, comunidad, setComunidad }}>
@@ -58,7 +58,7 @@ export default function PortalLayout({
                 </li>
 
                 <li>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/">Dashboard</Link>
                 </li>
 
                 {authenticated && (
