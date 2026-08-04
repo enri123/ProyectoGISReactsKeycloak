@@ -5,6 +5,7 @@ import "ol/ol.css";
 
 import TileLayer from "ol/layer/Tile";
 import VectorLayer from "ol/layer/Vector";
+import TileWMS from "ol/source/TileWMS";
 
 import { OSM, XYZ } from "ol/source";
 import VectorSource from "ol/source/Vector";
@@ -108,23 +109,48 @@ export default function DashboardMap() {
      *
      * Esta capa contendrá las geometrías del GeoJSON.
      */
-    const vectorLayer = new VectorLayer({
-      style: new Style({
-        fill: new Fill({
-          color: "rgba(0,120,230,0.2)",
-        }),
+    const styleNormal = new Style({
+  fill: new Fill({
+    color: "rgba(0,120,230,0.2)",
+  }),
+  stroke: new Stroke({
+    color: "#0078e6",
+    width: 1.5,
+  }),
+});
 
-        stroke: new Stroke({
-          color: "#0078e6",
-          width: 1.5,
-        }),
-      }),
-    });
+const styleSoloBorde = new Style({
+  stroke: new Stroke({
+    color: "#0078e6",
+    width: 1.5,
+  }),
+});
+
+const vectorLayer = new VectorLayer({
+  style: () => {
+    const zoom = mapRef.current?.getView().getZoom() ?? 0;
+    return zoom >= 10 ? styleSoloBorde : styleNormal;
+  },
+});
 
     /**
      * Guardamos la referencia de la capa vectorial.
      */
     vectorLayerRef.current = vectorLayer;
+
+    const catastroLayer = new TileLayer({
+      source: new TileWMS({
+        url: "https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx",
+        params: {
+          LAYERS: "Catastro",
+          FORMAT: "image/png",
+          TRANSPARENT: true,
+          VERSION: "1.1.1",
+        },
+        crossOrigin: "anonymous",
+      }),
+      visible: true,
+    });
 
     /**
      * Creamos el mapa.
@@ -135,7 +161,13 @@ export default function DashboardMap() {
      */
     const map = new Map({
       target: mapDivRef.current!,
-      layers: [capaOSM, capaGoogleSat, capaGoogleHybrid, vectorLayer],
+      layers: [
+        capaOSM,
+        capaGoogleSat,
+        capaGoogleHybrid,
+        catastroLayer,
+        vectorLayer,
+      ],
 
       view: new View({
         /**
