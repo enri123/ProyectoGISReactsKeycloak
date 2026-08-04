@@ -1,22 +1,22 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { Map, View } from "ol";
-import "ol/ol.css";
+import { Map, View } from 'ol';
+import 'ol/ol.css';
 
-import TileLayer from "ol/layer/Tile";
-import VectorLayer from "ol/layer/Vector";
-import TileWMS from "ol/source/TileWMS";
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import TileWMS from 'ol/source/TileWMS';
 
-import { OSM, XYZ } from "ol/source";
-import VectorSource from "ol/source/Vector";
+import { OSM, XYZ } from 'ol/source';
+import VectorSource from 'ol/source/Vector';
 
-import GeoJSON from "ol/format/GeoJSON";
+import GeoJSON from 'ol/format/GeoJSON';
 
-import { fromLonLat } from "ol/proj";
+import { fromLonLat } from 'ol/proj';
 
-import { Fill, Stroke, Style } from "ol/style";
+import { Fill, Stroke, Style } from 'ol/style';
 
-import { useLayout } from "../layout/useLayoutContext";
+import { useLayout } from '../layout/useLayoutContext';
 
 export default function DashboardMap() {
   /**
@@ -57,9 +57,9 @@ export default function DashboardMap() {
    * import.meta.url genera automáticamente la ruta correcta tanto en desarrollo como en producción.
    */
   const geojsonUrls = {
-    andalucia: new URL("../assets/andalucia.geojson", import.meta.url).href,
-    galicia: new URL("../assets/galicia.geojson", import.meta.url).href,
-    canarias: new URL("../assets/canarias.geojson", import.meta.url).href,
+    andalucia: new URL('../assets/andalucia.geojson', import.meta.url).href,
+    galicia: new URL('../assets/galicia.geojson', import.meta.url).href,
+    canarias: new URL('../assets/canarias.geojson', import.meta.url).href,
   } as const;
 
   /**
@@ -79,21 +79,21 @@ export default function DashboardMap() {
   useEffect(() => {
     const capaOSM = new TileLayer({
       source: new OSM(),
-      visible: fondo === "osm",
+      visible: fondo === 'osm',
     });
 
     const capaGoogleSat = new TileLayer({
       source: new XYZ({
-        url: "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+        url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       }),
-      visible: fondo === "google-sat",
+      visible: fondo === 'google-sat',
     });
 
     const capaGoogleHybrid = new TileLayer({
       source: new XYZ({
-        url: "https://mt1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+        url: 'https://mt1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
       }),
-      visible: fondo === "google-hyb",
+      visible: fondo === 'google-hyb',
     });
 
     /**
@@ -110,28 +110,28 @@ export default function DashboardMap() {
      * Esta capa contendrá las geometrías del GeoJSON.
      */
     const styleNormal = new Style({
-  fill: new Fill({
-    color: "rgba(0,120,230,0.2)",
-  }),
-  stroke: new Stroke({
-    color: "#0078e6",
-    width: 1.5,
-  }),
-});
+      fill: new Fill({
+        color: 'rgba(0,120,230,0.2)',
+      }),
+      stroke: new Stroke({
+        color: '#0078e6',
+        width: 1.5,
+      }),
+    });
 
-const styleSoloBorde = new Style({
-  stroke: new Stroke({
-    color: "#0078e6",
-    width: 1.5,
-  }),
-});
+    const styleSoloBorde = new Style({
+      stroke: new Stroke({
+        color: '#0078e6',
+        width: 1.5,
+      }),
+    });
 
-const vectorLayer = new VectorLayer({
-  style: () => {
-    const zoom = mapRef.current?.getView().getZoom() ?? 0;
-    return zoom >= 10 ? styleSoloBorde : styleNormal;
-  },
-});
+    const vectorLayer = new VectorLayer({
+      style: () => {
+        const zoom = mapRef.current?.getView().getZoom() ?? 0;
+        return zoom >= 10 ? styleSoloBorde : styleNormal;
+      },
+    });
 
     /**
      * Guardamos la referencia de la capa vectorial.
@@ -140,14 +140,14 @@ const vectorLayer = new VectorLayer({
 
     const catastroLayer = new TileLayer({
       source: new TileWMS({
-        url: "https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx",
+        url: 'https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx',
         params: {
-          LAYERS: "Catastro",
-          FORMAT: "image/png",
+          LAYERS: 'Catastro',
+          FORMAT: 'image/png',
           TRANSPARENT: true,
-          VERSION: "1.1.1",
+          VERSION: '1.1.1',
         },
-        crossOrigin: "anonymous",
+        crossOrigin: 'anonymous',
       }),
       visible: true,
     });
@@ -161,13 +161,7 @@ const vectorLayer = new VectorLayer({
      */
     const map = new Map({
       target: mapDivRef.current!,
-      layers: [
-        capaOSM,
-        capaGoogleSat,
-        capaGoogleHybrid,
-        catastroLayer,
-        vectorLayer,
-      ],
+      layers: [capaOSM, capaGoogleSat, capaGoogleHybrid, catastroLayer, vectorLayer],
 
       view: new View({
         /**
@@ -236,11 +230,11 @@ const vectorLayer = new VectorLayer({
     /**
      * Esperamos a que termine de cargar el GeoJSON.
      */
-    source.once("change", () => {
+    source.once('change', () => {
       /**
        * Solo continuamos cuando la carga ha finalizado.
        */
-      if (source.getState() !== "ready") return;
+      if (source.getState() !== 'ready') return;
 
       /**
        * Calculamos la extensión (bounding box)
@@ -281,9 +275,9 @@ const vectorLayer = new VectorLayer({
    * las demás.
    */
   useEffect(() => {
-    osmLayerRef.current?.setVisible(fondo === "osm");
-    googleSatLayerRef.current?.setVisible(fondo === "google-sat");
-    googleHybridLayerRef.current?.setVisible(fondo === "google-hyb");
+    osmLayerRef.current?.setVisible(fondo === 'osm');
+    googleSatLayerRef.current?.setVisible(fondo === 'google-sat');
+    googleHybridLayerRef.current?.setVisible(fondo === 'google-hyb');
   }, [fondo]);
 
   /**

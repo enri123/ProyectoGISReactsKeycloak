@@ -8,14 +8,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from "@mui/material";
+} from '@mui/material';
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useLayout } from "./useLayoutContext";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useLayout } from './useLayoutContext';
 
 export default function SideBarLayout({ open }: { open: boolean }) {
   const { comunidad, setComunidad } = useLayout();
-
 
   const { fondo, setFondo } = useLayout();
 
@@ -26,20 +25,19 @@ export default function SideBarLayout({ open }: { open: boolean }) {
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: 'absolute',
         top: 65,
         width: 320,
         height: 1,
-        maxHeight: "calc(100% - 60px)",
-        overflowY: "auto",
+        maxHeight: 'calc(100% - 60px)',
+        overflowY: 'auto',
         p: 2,
-        bgcolor: "white",
+        bgcolor: 'white',
         boxShadow: 4,
         zIndex: 1300,
-        pointerEvents: "auto",
+        pointerEvents: 'auto',
       }}
     >
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Comunidad</Typography>
@@ -71,16 +69,10 @@ export default function SideBarLayout({ open }: { open: boolean }) {
           <FormControl fullWidth>
             <InputLabel>Fondo</InputLabel>
 
-            <Select
-              value={fondo}
-              label="Fondo"
-              onChange={(e) => setFondo(e.target.value)}
-            >
+            <Select value={fondo} label="Fondo" onChange={(e) => setFondo(e.target.value)}>
               <MenuItem value="osm">OpenStreetMap</MenuItem>
               <MenuItem value="google-sat">Google Satélite</MenuItem>
-              <MenuItem value="google-hyb">
-                Google Satélite Híbrido
-              </MenuItem>
+              <MenuItem value="google-hyb">Google Satélite Híbrido</MenuItem>
             </Select>
           </FormControl>
         </AccordionDetails>

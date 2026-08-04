@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import { createContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 
-import keycloak from "./keycloak";
+import keycloak from './keycloak';
 
 type AuthContextType = {
   keycloak: typeof keycloak;
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const init = async () => {
       try {
         const auth = await keycloak.init({
-          onLoad: "login-required",
+          onLoad: 'login-required',
         });
 
         setAuthenticated(auth);

@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 export interface LayoutContextType {
   fondo: string;
@@ -7,6 +7,4 @@ export interface LayoutContextType {
   setComunidad: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const LayoutContext = createContext<LayoutContextType | undefined>(
-  undefined
-);
+export const LayoutContext = createContext<LayoutContextType | undefined>(undefined);

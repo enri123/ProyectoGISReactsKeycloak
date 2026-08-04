@@ -18,8 +18,8 @@ label {
   margin: 0 auto;
 }
 
-input[type="text"],
-[type="password"] {
+input[type='text'],
+[type='password'] {
   display: block;
   padding: 10px;
   box-sizing: border-box;
@@ -27,7 +27,7 @@ input[type="text"],
   margin: 5px 0 10px 0;
 }
 
-input[type="button"],
+input[type='button'],
 button {
   background-color: rgb(39, 131, 212);
   padding: 10px;
@@ -65,4 +65,3 @@ a {
   color: #a94442;
   padding: 10px;
 }
-
