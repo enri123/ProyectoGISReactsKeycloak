@@ -14,7 +14,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
 
   const [fondo, setFondo] = useState('osm');
 
-  const { authenticated, logout, user} = useAuth();
+  const { authenticated, logout, user } = useAuth();
 
   const [comunidad, setComunidad] = useState('canarias');
 
@@ -56,13 +56,17 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
 
                 {authenticated && (
                   <li>
-                    <button onClick={logout}>Logout</button>
+                    <button onClick={logout}>
+                      <Link to="/">Logout</Link>
+                    </button>
                   </li>
                 )}
-                
-                {authenticated && user?.realm_access?.roles.includes("user_creation") && (
+
+                {authenticated && user?.realm_access?.roles.includes('user_creation') && (
                   <li>
-                    <button><Link to="/crear-usuario">Crear usuario</Link></button>
+                    <button>
+                      <Link to="/crear-usuario">Crear usuario</Link>
+                    </button>
                   </li>
                 )}
               </div>

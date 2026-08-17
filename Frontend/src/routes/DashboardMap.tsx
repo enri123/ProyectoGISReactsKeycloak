@@ -52,7 +52,6 @@ export default function DashboardMap() {
 
   const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
 
-
   /**
    * ===========================================================
    * CREACIÓN DEL MAPA
@@ -74,7 +73,6 @@ export default function DashboardMap() {
 
     const vectorLayer = createVectorLayer(mapRef);
     vectorLayerRef.current = vectorLayer;
-
 
     const catastroLayer = createCatastroLayer();
 

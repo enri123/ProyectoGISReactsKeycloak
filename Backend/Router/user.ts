@@ -1,5 +1,5 @@
-import type { FastifyInstance } from "fastify";
-import { createKeycloakUser } from "../services/keycloakService.ts";
+import type { FastifyInstance } from 'fastify';
+import { createKeycloakUser } from '../services/keycloakService.ts';
 
 interface CreateUserBody {
   username: string;
@@ -10,19 +10,19 @@ interface CreateUserBody {
 
 export async function userRoutes(app: FastifyInstance) {
   app.get(
-    "/",
+    '/',
     {
       onRequest: [app.authenticate],
     },
     async () => {
       return {
-        message: "Users",
+        message: 'Users',
       };
-    },
+    }
   );
 
   app.post<{ Body: CreateUserBody }>(
-    "/",
+    '/',
     {
       onRequest: [app.authenticate],
     },
@@ -31,10 +31,10 @@ export async function userRoutes(app: FastifyInstance) {
        * 1. Comprobar que el usuario tiene permiso
        *    para crear usuarios.
        */
-      console.log("User roles:", request.user);
-      if (!request.user.realm_access?.roles.includes("user_creation")) {
+      console.log('User roles:', request.user);
+      if (!request.user.realm_access?.roles.includes('user_creation')) {
         return reply.code(403).send({
-          error: "You do not have permission to create users",
+          error: 'You do not have permission to create users',
         });
       }
 
@@ -48,7 +48,7 @@ export async function userRoutes(app: FastifyInstance) {
        */
       if (!username || !email || !password || !Array.isArray(roles)) {
         return reply.code(400).send({
-          error: "Invalid user data",
+          error: 'Invalid user data',
         });
       }
 
@@ -60,7 +60,12 @@ export async function userRoutes(app: FastifyInstance) {
        *    Estos roles se comprueban en el BACKEND.
        *    No confiamos en los roles enviados por React.
        */
-      const noAllowedRoles = ["offline_access", "uma_authorization", "user_creation", "default-roles-reino-infodp"];
+      const noAllowedRoles = [
+        'offline_access',
+        'uma_authorization',
+        'user_creation',
+        'default-roles-reino-infodp',
+      ];
 
       /*
        * 5. Buscar roles no permitidos.
@@ -72,13 +77,12 @@ export async function userRoutes(app: FastifyInstance) {
        *    rechazamos toda la petición.
        */
       if (invalidRoles.length > 0) {
-
-  return reply.code(400).send({
-    error: "You cannot assign one or more requested roles",
-    invalidRoles,
-    noAllowedRoles,
-  });
-}
+        return reply.code(400).send({
+          error: 'You cannot assign one or more requested roles',
+          invalidRoles,
+          noAllowedRoles,
+        });
+      }
 
       try {
         /*
@@ -95,16 +99,16 @@ export async function userRoutes(app: FastifyInstance) {
          * 8. Respuesta.
          */
         return reply.code(201).send({
-          message: "User created successfully",
+          message: 'User created successfully',
           user: createdUser,
         });
       } catch (error) {
-        console.error("Error creating Keycloak user:", error);
+        console.error('Error creating Keycloak user:', error);
 
         return reply.code(500).send({
-          error: "Could not create user",
+          error: 'Could not create user',
         });
       }
-    },
+    }
   );
 }

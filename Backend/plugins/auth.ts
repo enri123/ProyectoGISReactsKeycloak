@@ -1,13 +1,22 @@
-import fp from "fastify-plugin";
-import jwt from "@fastify/jwt";
-import jwksClient from "jwks-rsa";
+import fp from 'fastify-plugin';
+import jwt from '@fastify/jwt';
+import jwksClient from 'jwks-rsa';
 
-const KEYCLOAK_ISSUER =
-  "http://localhost:8080/realms/reino-infodp";
+const keycloak_issuer = process.env.KEYCLOAK_ISSUER;
+let jwks_url: string;
+
+if (process.env.DESPLIEGUE === 'docker') {
+  jwks_url = process.env.JWKS_URI_DOCKER!;
+} else {
+  jwks_url = process.env.JWKS_URI_LOCAL!;
+}
+
+if (!jwks_url || !keycloak_issuer) {
+  throw new Error('Keycloak admin configuration is missing');
+}
 
 const client = jwksClient({
-  jwksUri:
-    "http://localhost:8080/realms/reino-infodp/protocol/openid-connect/certs",
+  jwksUri: jwks_url,
 });
 
 export default fp(async (fastify) => {
@@ -16,23 +25,23 @@ export default fp(async (fastify) => {
       complete: true,
     },
 
-    secret: async (_request, token) => {
+    secret: async (request, token) => {
       if (!token) {
-        throw new Error("Token not provided");
+        throw new Error('Token not provided');
       }
 
       const { header, payload } = token;
 
       if (!header?.kid || !header?.alg || !payload?.iss) {
-        throw new Error("Invalid token");
+        throw new Error('Invalid token');
       }
 
-      if (payload.iss !== KEYCLOAK_ISSUER) {
-        throw new Error("Invalid token issuer");
+      if (payload.iss !== keycloak_issuer) {
+        throw new Error('Invalid token issuer');
       }
 
-      if (header.alg !== "RS256") {
-        throw new Error("Unsupported JWT algorithm");
+      if (header.alg !== 'RS256') {
+        throw new Error('Unsupported JWT algorithm');
       }
 
       const key = await client.getSigningKey(header.kid);
@@ -41,19 +50,19 @@ export default fp(async (fastify) => {
     },
 
     verify: {
-      algorithms: ["RS256"],
-      allowedIss: [KEYCLOAK_ISSUER],
+      algorithms: ['RS256'],
+      allowedIss: [keycloak_issuer],
     },
   });
 
-  fastify.decorate("authenticate", async function (request, reply) {
+  fastify.decorate('authenticate', async function (request, reply) {
     try {
       await request.jwtVerify();
     } catch (error) {
-      request.log.error(error, "JWT verification failed");
+      request.log.error(error, 'JWT verification failed');
 
       return reply.code(401).send({
-        message: "Unauthorized",
+        message: 'Unauthorized',
       });
     }
   });
