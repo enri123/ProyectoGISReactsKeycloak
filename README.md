@@ -177,20 +177,20 @@ ProyectoGISReactsKeycloak/
 │   ├── src/
 │   │   ├── assets/
 │   │   ├── auth/
-│   │   |   └── AuthProvider.tsx
-│   │   |   └── keycloak.tsx
-│   │   |   └── useAuth.tsx
+│   │   │   ├── AuthProvider.tsx
+│   │   │   ├── keycloak.tsx
+│   │   │   └── useAuth.tsx
 │   │   ├── layout/
-│   │   |   └── LayoutContext.tsx
-│   │   |   └── PortalLayout.tsx
-│   │   |   └── SideBarLayout.tsx
-│   │   |   └── useLayoutContext.tsx
+│   │   │   ├── LayoutContext.tsx
+│   │   │   ├── PortalLayout.tsx
+│   │   │   ├── SideBarLayout.tsx
+│   │   │   └── useLayoutContext.tsx
 │   │   ├── routes/
-│   │   |   └── CapasMap.tsx
-│   │   |   └── CrearUsuarios.tsx
-│   │   |   └── Dashboard.tsx
-│   │   |   └── DashboardMap.tsx
-│   │   |   └── GeoJsonMap.tsx
+│   │   │   ├── CapasMap.tsx
+│   │   │   ├── CrearUsuarios.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── DashboardMap.tsx
+│   │   │   └── GeoJsonMap.tsx
 │   │   ├── App.css
 │   │   ├── App.tsx
 │   │   ├── const.tsx
@@ -277,32 +277,6 @@ DESPLIEGUE=local
 
 The application uses different Keycloak URLs depending on this value.
 
-## Docker
-
-The backend runs inside Docker and must reach Keycloak through the Docker network:
-
-```env
-KEYCLOAK_URL=http://keycloak:8080
-```
-
-The browser, however, accesses Keycloak through the host:
-
-```text
-http://localhost:8080
-```
-
-## Local
-
-When the backend is executed directly on the host, Keycloak can be accessed through:
-
-```text
-http://localhost:8080
-```
-
-Therefore, the local configuration should use the local Keycloak URL.
-
-> **Important:** Do not use `http://localhost:8080` as the backend-to-Keycloak URL when the backend itself is running inside Docker. In that situation, `localhost` points to the backend container.
-
 ## Keycloak administration credentials
 
 The Docker Compose configuration initializes Keycloak with:
@@ -314,8 +288,6 @@ KEYCLOAK_ADMIN_PASSWORD=admin
 
 These credentials are intended for the development environment.
 
-Do not use these credentials in a production deployment.
-
 ## Backend `.env`
 
 The backend `.env` file also contains the Keycloak service-account client secret:
@@ -325,8 +297,6 @@ KEYCLOAK_ADMIN_CLIENT_SECRET=<your-client-secret>
 ```
 
 The value must be obtained from the `backend-admin` Keycloak client described below.
-
-**Never commit real client secrets or other sensitive credentials to a public repository.**
 
 ---
 
@@ -643,20 +613,6 @@ Once this is configured, the project's Keycloak-dependent functionality should b
 ---
 
 # Running the Application
-
-## Docker Compose
-
-The complete application can be started from the repository root:
-
-```bash
-docker compose up
-```
-
-To run it in detached mode:
-
-```bash
-docker compose up -d
-```
 
 The Docker Compose configuration contains three services.
 
@@ -1535,8 +1491,6 @@ Using the wrong value can cause the backend to use the wrong Keycloak URL.
 
 **Enri Ruiz**
 
-GitHub:
-
-https://github.com/enri123
+GitHub: https://github.com/enri123
 
 ---
