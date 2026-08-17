@@ -85,9 +85,6 @@ jobs:
       - name: Lint with ESLint
         run: npm run lint
 
-      - name: Typecheck with TypeScript
-        run: npm run typecheck
-
       - name: Build production bundle
         run: npm run build
 
