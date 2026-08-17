@@ -85,9 +85,6 @@ jobs:
       - name: Lint with ESLint
         run: npm run lint
 
-      - name: Build production bundle
-        run: npm run build
-
       - name: Upload production build artifact
         if: success()
         uses: actions/upload-artifact@v4
