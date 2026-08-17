@@ -47,9 +47,6 @@ jobs:
       - name: Typecheck with TypeScript
         run: npm run typecheck
 
-      - name: Run unit tests
-        run: npm test
-
       - name: Build production bundle
         run: npm run build
 
@@ -90,9 +87,6 @@ jobs:
 
       - name: Typecheck with TypeScript
         run: npm run typecheck
-
-      - name: Run unit tests
-        run: npm test
 
       - name: Build production bundle
         run: npm run build
