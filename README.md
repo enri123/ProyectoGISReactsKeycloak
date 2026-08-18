@@ -143,10 +143,11 @@ Inside the backend container, `localhost` refers to the backend container itself
 
 ---
 
-# Project Structure
+## Project Structure
 
 The repository is organized approximately as follows:
 
+```text
 ProyectoGISReactsKeycloak/
 │
 ├── .github/
@@ -214,7 +215,6 @@ ProyectoGISReactsKeycloak/
 ├── docker-compose.yml
 └── README.md
 ```
-
 ---
 
 # Prerequisites
