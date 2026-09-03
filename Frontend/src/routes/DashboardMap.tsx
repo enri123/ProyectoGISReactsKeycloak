@@ -125,8 +125,8 @@ export default function DashboardMap() {
         return element;
       })(),
     });
-
     map.addControl(zoomToCommunity);
+
     map.on('singleclick', function (evt) {
       const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
         return feature; // Retorna la primera feature encontrada en el píxel

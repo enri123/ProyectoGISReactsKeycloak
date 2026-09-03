@@ -53,7 +53,7 @@ export async function userRoutes(app: FastifyInstance) {
       }
 
       /*
-       * 4. Roles que puede asignar un usuario
+       * 4. Roles que no puede asignar un usuario
        *    que tenga "user_creation".
        *
        *    IMPORTANTE:

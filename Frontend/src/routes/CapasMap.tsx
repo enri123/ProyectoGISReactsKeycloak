@@ -8,7 +8,7 @@ import VectorSource from 'ol/source/Vector';
 
 import TileWMS from 'ol/source/TileWMS';
 
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, Stroke, Style, Text } from 'ol/style';
 import type { RefObject } from 'react';
 
 /**
@@ -73,36 +73,34 @@ export function createCatastroLayer() {
 
 export function createVectorLayer(mapRef: RefObject<Map | null>) {
   /**
-   * Creamos los estilos utilizados para representar
-   * las geometrías del GeoJSON.
-   */
-  const styleNormal = new Style({
-    fill: new Fill({
-      color: 'rgba(0,120,230,0.2)',
-    }),
-    stroke: new Stroke({
-      color: '#0078e6',
-      width: 1.5,
-    }),
-  });
-
-  const styleSoloBorde = new Style({
-    stroke: new Stroke({
-      color: '#0078e6',
-      width: 1.5,
-    }),
-  });
-
-  /**
    * Creamos la capa vectorial.
    *
    * El estilo cambia dependiendo del nivel de zoom.
    */
   const vectorLayer = new VectorLayer<VectorSource>({
-    style: () => {
+    style: (feature) => {
       const zoom = mapRef.current?.getView().getZoom() ?? 0;
+      const nombreMunicipio = feature.get('NAMEUNIT');
 
-      return zoom >= 10 ? styleSoloBorde : styleNormal;
+      return new Style({
+        fill: zoom >= 10 ? undefined : new Fill({
+          color: 'rgba(0,120,230,0.2)',
+        }),
+        stroke: new Stroke({
+          color: '#ff0000',
+          width: 1.5,
+        }),
+        text: zoom <= 11 ? undefined : new Text({
+          text: typeof nombreMunicipio === 'string' ? nombreMunicipio : '',
+          font: '14px sans-serif',
+          fill: new Fill({ color: '#1f2937' }),
+          stroke: new Stroke({
+            color: '#ffffff',
+            width: 3,
+          }),
+          overflow: true,
+        }),
+      });
     },
   });
 

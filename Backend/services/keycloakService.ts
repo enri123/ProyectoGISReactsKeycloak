@@ -1,5 +1,3 @@
-// services/keycloakService.ts
-
 interface CreateKeycloakUserData {
   username: string;
   email: string;
@@ -72,11 +70,6 @@ export async function createKeycloakUser(userData: CreateKeycloakUserData) {
   }
   const realm = process.env.KEYCLOAK_REALM;
 
-  console.log('CREATE USER CONFIG:', {
-    KEYCLOAK_URL: keycloakUrl,
-    KEYCLOAK_REALM: realm,
-  });
-
   if (!keycloakUrl || !realm) {
     throw new Error('Keycloak configuration is missing');
   }
@@ -84,7 +77,7 @@ export async function createKeycloakUser(userData: CreateKeycloakUserData) {
   const adminToken = await getKeycloakAdminToken();
 
   /*
-   * 1. Crear usuario
+    1. Crear usuario
    */
 
   const createUserResponse = await fetch(`${keycloakUrl}/admin/realms/${realm}/users`, {
@@ -115,8 +108,8 @@ export async function createKeycloakUser(userData: CreateKeycloakUserData) {
   }
 
   /*
-   * Keycloak devuelve 201 Created.
-   * El ID del usuario viene en la cabecera Location.
+    Keycloak devuelve 201 Created.
+    El ID del usuario viene en la cabecera Location.
    */
 
   const location = createUserResponse.headers.get('location');
@@ -132,7 +125,7 @@ export async function createKeycloakUser(userData: CreateKeycloakUserData) {
   }
 
   /*
-   * 2. Asignar roles
+    2. Asignar roles
    */
 
   for (const roleName of userData.roles) {
@@ -153,7 +146,7 @@ export async function createKeycloakUser(userData: CreateKeycloakUserData) {
     const role = (await roleResponse.json()) as KeycloakRole;
 
     /*
-     * Asignar el role al usuario
+      Asignar el role al usuario
      */
 
     const assignRoleResponse = await fetch(
