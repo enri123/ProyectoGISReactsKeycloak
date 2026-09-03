@@ -32,7 +32,6 @@ The project is divided into a React frontend and a Node.js/Fastify backend, with
 * [Development](#development)
 * [Continuous Integration](#continuous-integration)
 * [Troubleshooting](#troubleshooting)
-* [Future Improvements](#future-improvements)
 * [Author](#author)
 
 ---
@@ -144,10 +143,11 @@ Inside the backend container, `localhost` refers to the backend container itself
 
 ---
 
-# Project Structure
+## Project Structure
 
 The repository is organized approximately as follows:
 
+```text
 ProyectoGISReactsKeycloak/
 │
 ├── .github/
@@ -178,20 +178,20 @@ ProyectoGISReactsKeycloak/
 │   ├── src/
 │   │   ├── assets/
 │   │   ├── auth/
-│   │   |   └── AuthProvider.tsx
-│   │   |   └── keycloak.tsx
-│   │   |   └── useAuth.tsx
+│   │   │   ├── AuthProvider.tsx
+│   │   │   ├── keycloak.tsx
+│   │   │   └── useAuth.tsx
 │   │   ├── layout/
-│   │   |   └── LayoutContext.tsx
-│   │   |   └── PortalLayout.tsx
-│   │   |   └── SideBarLayout.tsx
-│   │   |   └── useLayoutContext.tsx
+│   │   │   ├── LayoutContext.tsx
+│   │   │   ├── PortalLayout.tsx
+│   │   │   ├── SideBarLayout.tsx
+│   │   │   └── useLayoutContext.tsx
 │   │   ├── routes/
-│   │   |   └── CapasMap.tsx
-│   │   |   └── CrearUsuarios.tsx
-│   │   |   └── Dashboard.tsx
-│   │   |   └── DashboardMap.tsx
-│   │   |   └── GeoJsonMap.tsx
+│   │   │   ├── CapasMap.tsx
+│   │   │   ├── CrearUsuarios.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── DashboardMap.tsx
+│   │   │   └── GeoJsonMap.tsx
 │   │   ├── App.css
 │   │   ├── App.tsx
 │   │   ├── const.tsx
@@ -215,7 +215,6 @@ ProyectoGISReactsKeycloak/
 ├── docker-compose.yml
 └── README.md
 ```
-
 ---
 
 # Prerequisites
@@ -278,32 +277,6 @@ DESPLIEGUE=local
 
 The application uses different Keycloak URLs depending on this value.
 
-## Docker
-
-The backend runs inside Docker and must reach Keycloak through the Docker network:
-
-```env
-KEYCLOAK_URL=http://keycloak:8080
-```
-
-The browser, however, accesses Keycloak through the host:
-
-```text
-http://localhost:8080
-```
-
-## Local
-
-When the backend is executed directly on the host, Keycloak can be accessed through:
-
-```text
-http://localhost:8080
-```
-
-Therefore, the local configuration should use the local Keycloak URL.
-
-> **Important:** Do not use `http://localhost:8080` as the backend-to-Keycloak URL when the backend itself is running inside Docker. In that situation, `localhost` points to the backend container.
-
 ## Keycloak administration credentials
 
 The Docker Compose configuration initializes Keycloak with:
@@ -315,8 +288,6 @@ KEYCLOAK_ADMIN_PASSWORD=admin
 
 These credentials are intended for the development environment.
 
-Do not use these credentials in a production deployment.
-
 ## Backend `.env`
 
 The backend `.env` file also contains the Keycloak service-account client secret:
@@ -326,8 +297,6 @@ KEYCLOAK_ADMIN_CLIENT_SECRET=<your-client-secret>
 ```
 
 The value must be obtained from the `backend-admin` Keycloak client described below.
-
-**Never commit real client secrets or other sensitive credentials to a public repository.**
 
 ---
 
@@ -644,20 +613,6 @@ Once this is configured, the project's Keycloak-dependent functionality should b
 ---
 
 # Running the Application
-
-## Docker Compose
-
-The complete application can be started from the repository root:
-
-```bash
-docker compose up
-```
-
-To run it in detached mode:
-
-```bash
-docker compose up -d
-```
 
 The Docker Compose configuration contains three services.
 
@@ -1439,26 +1394,6 @@ Complete the Keycloak setup described in this README.
 
 ---
 
-## Port already in use
-
-### Symptom
-
-Docker cannot start a service because a port is already occupied.
-
-### Check
-
-For example:
-
-```bash
-sudo lsof -i :5173
-sudo lsof -i :3000
-sudo lsof -i :8080
-```
-
-Stop the process using the required port or change the Docker port mapping.
-
----
-
 ## Changes to backend code are not reflected
 
 The backend container mounts:
@@ -1552,25 +1487,10 @@ Using the wrong value can cause the backend to use the wrong Keycloak URL.
 
 ---
 
-# Future Improvements
-
-Possible future improvements include:
-
-* More comprehensive automated tests.
-* Expanded GIS interaction capabilities.
-* More granular authorization policies.
-* Improved production-oriented Keycloak configuration.
-* Production Docker configuration.
-* More extensive API documentation.
-* Interactive cadastral data operations.
-* Additional GIS layers and tools.
-
----
-
 # Author
 
 **Enri Ruiz**
 
-GitHub:
+GitHub: https://github.com/enri123
 
-https://github.com/enri123
+---

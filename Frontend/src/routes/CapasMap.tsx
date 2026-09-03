@@ -83,23 +83,29 @@ export function createVectorLayer(mapRef: RefObject<Map | null>) {
       const nombreMunicipio = feature.get('NAMEUNIT');
 
       return new Style({
-        fill: zoom >= 10 ? undefined : new Fill({
-          color: 'rgba(0,120,230,0.2)',
-        }),
+        fill:
+          zoom >= 10
+            ? undefined
+            : new Fill({
+                color: 'rgba(0,120,230,0.2)',
+              }),
         stroke: new Stroke({
           color: '#ff0000',
           width: 1.5,
         }),
-        text: zoom <= 11 ? undefined : new Text({
-          text: typeof nombreMunicipio === 'string' ? nombreMunicipio : '',
-          font: '14px sans-serif',
-          fill: new Fill({ color: '#1f2937' }),
-          stroke: new Stroke({
-            color: '#ffffff',
-            width: 3,
-          }),
-          overflow: true,
-        }),
+        text:
+          zoom <= 11
+            ? undefined
+            : new Text({
+                text: typeof nombreMunicipio === 'string' ? nombreMunicipio : '',
+                font: '14px sans-serif',
+                fill: new Fill({ color: '#1f2937' }),
+                stroke: new Stroke({
+                  color: '#ffffff',
+                  width: 3,
+                }),
+                overflow: true,
+              }),
       });
     },
   });
