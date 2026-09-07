@@ -74,7 +74,7 @@ export default function DashboardMap() {
     const vectorLayer = createVectorLayer(mapRef);
     vectorLayerRef.current = vectorLayer;
 
-    const catastroLayer = createCatastroLayer();
+    const catastroLayer =  createCatastroLayer();
 
     /**
      * target -> div donde se dibuja.
@@ -89,7 +89,7 @@ export default function DashboardMap() {
       layers: [capaOSM, capaGoogleSat, capaGoogleHybrid, catastroLayer, vectorLayer],
 
       view: new View({
-        center: fromLonLat([-3.7038, 40.4168]),
+        center: fromLonLat([-7.59, 43.66]),
         zoom: 6,
       }),
     });

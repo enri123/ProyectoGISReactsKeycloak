@@ -16,7 +16,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
 
   const { authenticated, logout, user } = useAuth();
 
-  const [comunidad, setComunidad] = useState('canarias');
+  const [comunidad, setComunidad] = useState('galicia');
 
   return (
     <LayoutContext.Provider value={{ fondo, setFondo, comunidad, setComunidad }}>

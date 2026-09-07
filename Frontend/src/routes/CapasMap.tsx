@@ -6,10 +6,11 @@ import VectorLayer from 'ol/layer/Vector';
 import { OSM, XYZ } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 
-import TileWMS from 'ol/source/TileWMS';
+//import TileWMS from 'ol/source/TileWMS';
 
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import type { RefObject } from 'react';
+import GeoJSON from 'ol/format/GeoJSON';
 
 /**
  * ===========================================================
@@ -47,6 +48,7 @@ export function createGoogleHybridLayer(fondo: string) {
  * CAPA DE CATASTRO
  * ===========================================================
  */
+/*
 export function createCatastroLayer() {
   return new TileLayer({
     source: new TileWMS({
@@ -61,8 +63,51 @@ export function createCatastroLayer() {
     }),
     visible: true,
   });
-}
+}*/
+export function createCatastroLayer() {
+  const buildingsSource = new VectorSource();
 
+  fetch('http://localhost:3000/api/catastro/buildings')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
+      return response.json();
+    })
+    .then((geojson) => {
+      if (!geojson || !geojson.features) {
+        console.warn('GeoJSON vacío recibido');
+        return;
+      }
+      const features = new GeoJSON().readFeatures(geojson, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857',
+      });
+
+      buildingsSource.addFeatures(features);
+      console.log(`${features.length} edificios cargados`);
+    })
+    .catch((error) => {
+      console.error('Error cargando edificios:', error);
+      console.warn('Los edificios del catastro no se pudieron cargar');
+    });
+
+  const buildingsLayer = new VectorLayer({
+    source: buildingsSource,
+    style: new Style({
+      fill: new Fill({
+        color: 'rgba(255, 0, 0, 0.35)',
+      }),
+      stroke: new Stroke({
+        color: '#ffff00',
+        width: 1,
+      }),
+    }),
+  });
+
+  return buildingsLayer;
+}
 /**
  * ===========================================================
  * CAPA VECTORIAL

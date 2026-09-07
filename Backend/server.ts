@@ -5,6 +5,7 @@ import cors from '@fastify/cors';
 
 import authPlugin from './plugins/auth.ts';
 import { userRoutes } from './Router/user.ts';
+import { catastroRoutes } from './Router/catastro.ts';
 
 // Activamos los logs
 const app = Fastify({
@@ -24,6 +25,10 @@ async function main() {
 
   await app.register(userRoutes, {
     prefix: '/api/users',
+  });
+
+   await app.register(catastroRoutes, {
+    prefix: '/api/catastro',
   });
 
   app.get('/', async () => {

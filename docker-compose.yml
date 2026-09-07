@@ -2,6 +2,28 @@ version: '3.9'
 
 services:
 
+  postgres:
+    image: postgis/postgis:16-3.4
+
+    container_name: catastro-db
+
+    environment:
+      POSTGRES_DB: catastro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./Database/01-buildings.sql:/docker-entrypoint-initdb.d/01-buildings.sql:ro
+
+    restart: unless-stopped
+
+    networks:
+      - app-network
+
   frontend:
     build:
       context: ./Frontend
@@ -14,6 +36,7 @@ services:
 
     depends_on:
       - keycloak
+      - postgres
       - backend
 
     restart: unless-stopped
@@ -38,6 +61,7 @@ services:
 
     depends_on:
       - keycloak
+      - postgres
 
     restart: unless-stopped
 
@@ -68,3 +92,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  postgres-data:
