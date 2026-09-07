@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS buildings (
     municipality VARCHAR(100),
     province VARCHAR(100),
     area_m2 DOUBLE PRECISION,
-    geom geometry(MultiPolygon, 25830)
+    geom geometry(MultiPolygon, 25829)
 );
 
 CREATE INDEX IF NOT EXISTS buildings_geom_idx

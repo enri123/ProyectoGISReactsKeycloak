@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
 
   postgres:
@@ -23,6 +21,24 @@ services:
 
     networks:
       - app-network
+
+  gdal:
+    image: ghcr.io/osgeo/gdal:ubuntu-small-latest
+
+    container_name: catastro-gdal
+
+    volumes:
+      - ./Database/A.ES.SDGC.BU.Viveiro.building.gml:/data/Viveiro.gml:ro
+      - ./Database/A.ES.SDGC.BU.Torremolinos.building.gml:/data/Torremolinos.gml:ro
+      - ./Database/02-load-buildings.sh:/02-load-buildings.sh:ro
+
+    depends_on:
+      - postgres
+
+    networks:
+      - app-network
+
+    entrypoint: ["/bin/bash", "/02-load-buildings.sh"]
 
   frontend:
     build:
