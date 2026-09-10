@@ -5,21 +5,38 @@ import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import SideBarLayout from './SideBarLayout';
+import PopUpLayout from './PopUpLayout';
 import { LayoutContext } from './LayoutContext';
 
 import { useAuth } from '../auth/useAuth';
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [selectedFeatureProperties, setSelectedFeatureProperties] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
 
   const [fondo, setFondo] = useState('osm');
 
   const { authenticated, logout, user } = useAuth();
 
-  const [comunidad, setComunidad] = useState('galicia');
+  const [comunidad, setComunidad] = useState('');
 
   return (
-    <LayoutContext.Provider value={{ fondo, setFondo, comunidad, setComunidad }}>
+    <LayoutContext.Provider
+      value={{
+        fondo,
+        setFondo,
+        comunidad,
+        setComunidad,
+        setDrawerOpen,
+        setPopupOpen,
+        selectedFeatureProperties,
+        setSelectedFeatureProperties,
+      }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <header style={{ height: 64, position: 'relative', zIndex: 1200 }}>
           <nav style={{ backgroundColor: 'black', height: '100%' }}>
@@ -87,6 +104,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         </header>
 
         <SideBarLayout open={drawerOpen} />
+        <PopUpLayout open={popupOpen} />
 
         <main
           style={{

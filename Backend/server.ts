@@ -27,7 +27,7 @@ async function main() {
     prefix: '/api/users',
   });
 
-   await app.register(catastroRoutes, {
+  await app.register(catastroRoutes, {
     prefix: '/api/catastro',
   });
 

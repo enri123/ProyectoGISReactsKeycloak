@@ -19,6 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const auth = await keycloak.init({
           onLoad: 'login-required',
+          checkLoginIframe: false,
         });
 
         setAuthenticated(auth);

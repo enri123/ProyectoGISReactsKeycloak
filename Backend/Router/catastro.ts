@@ -14,42 +14,79 @@ const db = new Pool({
 export async function catastroRoutes(app: FastifyInstance) {
   console.log(`Entra en la función de catastro`);
 
-  app.get('/buildings', async (request, reply) => {
-    try {
-      console.log(`Entra en la api de catastro`);
+  app.get(
+    '/buildings',
+    {
+      onRequest: [app.authenticate],
+    },
+    async (request, reply) => {
+      console.log(`User roles: ${request.user.realm_access?.roles}`);
 
-    const result = await db.query(`
+      try {
+        console.log(`Entra en la api de catastro`);
+
+        let result;
+
+        if (request.user.realm_access?.roles.includes('user_creation')) {
+          result = await db.query(`
         SELECT
             id,
-            cadastral_id,
+          municipality,
+          riesgo,
             ST_AsGeoJSON(
                 ST_Transform(geom, 4326)
             )::json AS geometry
         FROM buildings
     `);
-      console.log(`result: ${result.rows.length} rows`);
+        } else {
+          const municipalityRoles = (request.user.realm_access?.roles ?? [])
+            .map((role) => role.trim().toLowerCase())
+            .filter(Boolean);
 
-      const features = result.rows.map((row) => ({
-        type: 'Feature',
-        geometry: row.geometry,
-        properties: {
-          id: row.id,
-          cadastral_id: row.cadastral_id,
-        },
-      }));
-      console.log(`features count: ${features.length}`);
+          console.log(`Municipality roles: ${municipalityRoles}`);
+          console.log(`Entra en la api de catastro`);
 
-      return {
-        type: 'FeatureCollection',
-        features,
-      };
-    } catch (error) {
-      console.error('Error al consultar la base de datos:', error);
-      reply.code(500).send({
-        error: 'Error querying the database',
-      });
+          result = await db.query(
+            `
+        SELECT
+            id,
+          municipality,
+          riesgo,
+            ST_AsGeoJSON(
+                ST_Transform(geom, 4326)
+            )::json AS geometry
+            FROM buildings
+            WHERE LOWER(municipality) = ANY($1::text[])
+          `,
+            [municipalityRoles]
+          );
+        }
+
+        console.log(`result: ${result.rows.length} rows`);
+
+        const features = result.rows.map((row) => ({
+          type: 'Feature',
+          geometry: row.geometry,
+          properties: {
+            id: row.id,
+            municipality: row.municipality,
+            riesgo: row.riesgo,
+          },
+        }));
+        console.log(`features count: ${features.length}`);
+
+        return {
+          type: 'FeatureCollection',
+          features,
+        };
+      } catch (error) {
+        console.error('Error al consultar la base de datos:', error);
+        reply.code(500).send({
+          error: 'Error querying the database',
+        });
+      }
     }
-  });
+  );
 }
 
 // Graceful shutdown

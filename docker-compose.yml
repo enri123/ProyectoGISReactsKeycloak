@@ -1,7 +1,7 @@
 services:
 
   postgres:
-    image: postgis/postgis:16-3.4
+    image: postgis/postgis:16-3.4-alpine
 
     container_name: catastro-db
 
@@ -30,6 +30,9 @@ services:
     volumes:
       - ./Database/A.ES.SDGC.BU.Viveiro.building.gml:/data/Viveiro.gml:ro
       - ./Database/A.ES.SDGC.BU.Torremolinos.building.gml:/data/Torremolinos.gml:ro
+      - ./Database/A.ES.SDGC.BU.Algeciras.building.gml:/data/Algeciras.gml:ro
+      - ./Database/A.ES.SDGC.BU.Madrid.building.gml:/data/Madrid.gml:ro
+
       - ./Database/02-load-buildings.sh:/02-load-buildings.sh:ro
 
     depends_on:
@@ -88,7 +91,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.7
 
-    container_name: keycloak
+    container_name: keycloak-alpine
 
     command: start-dev
 

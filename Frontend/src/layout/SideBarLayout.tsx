@@ -11,33 +11,23 @@ import {
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useLayout } from './useLayoutContext';
+import { useLayout } from '../hooks/useLayoutContext';
+import { useAuth } from '../auth/useAuth';
+import { SideBarStyles } from './styles/SideBarLayoutStyles.tsx';
 
 export default function SideBarLayout({ open }: { open: boolean }) {
   const { comunidad, setComunidad } = useLayout();
 
   const { fondo, setFondo } = useLayout();
 
+  const { authenticated, user } = useAuth();
+
   if (!open) {
     return null;
   }
 
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 65,
-        width: 320,
-        height: 1,
-        maxHeight: 'calc(100% - 60px)',
-        overflowY: 'auto',
-        p: 2,
-        bgcolor: 'white',
-        boxShadow: 4,
-        zIndex: 1300,
-        pointerEvents: 'auto',
-      }}
-    >
+    <Box sx={SideBarStyles.boxMain}>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Comunidad</Typography>
@@ -52,9 +42,31 @@ export default function SideBarLayout({ open }: { open: boolean }) {
               label="Comunidad"
               onChange={(e) => setComunidad(e.target.value)}
             >
-              <MenuItem value="andalucia">Andalucia</MenuItem>
-              <MenuItem value="galicia">Galicia</MenuItem>
-              <MenuItem value="canarias">Canarias</MenuItem>
+              {authenticated &&
+                (user?.realm_access?.roles.includes('algeciras') ||
+                  user?.realm_access?.roles.includes('user_creation')) && (
+                  <MenuItem value="algeciras">Algeciras</MenuItem>
+                )}
+              {authenticated &&
+                (user?.realm_access?.roles.includes('torremolinos') ||
+                  user?.realm_access?.roles.includes('user_creation')) && (
+                  <MenuItem value="torremolinos">Torremolinos</MenuItem>
+                )}
+              {authenticated &&
+                (user?.realm_access?.roles.includes('andalucia') ||
+                  user?.realm_access?.roles.includes('user_creation')) && (
+                  <MenuItem value="andalucia">Andalucia</MenuItem>
+                )}
+              {authenticated &&
+                (user?.realm_access?.roles.includes('galicia') ||
+                  user?.realm_access?.roles.includes('user_creation')) && (
+                  <MenuItem value="galicia">Galicia</MenuItem>
+                )}
+              {authenticated &&
+                (user?.realm_access?.roles.includes('canarias') ||
+                  user?.realm_access?.roles.includes('user_creation')) && (
+                  <MenuItem value="canarias">Canarias</MenuItem>
+                )}
             </Select>
           </FormControl>
         </AccordionDetails>
