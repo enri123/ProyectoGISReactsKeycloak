@@ -1,12 +1,13 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography, Select, MenuItem, IconButton, Link } from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
 import { useState } from 'react';
 import { useLayout } from '../hooks/useLayoutContext';
 import { popupStyles } from './styles/PopUpLayoutStyles.tsx';
-import miImagen from '../assets/tralalero-tralala_15_630x420.png';
 
 export default function PopUpLayout({ open }: { open: boolean }) {
   const { selectedFeatureProperties, setPopupOpen } = useLayout();
   const [activeTab, setActiveTab] = useState('edificio');
+
   const riskColors: Record<string, string> = {
     nulo: 'rgba(128, 128, 128, 0.5)',
     bajo: 'rgba(46, 204, 113, 0.5)',
@@ -22,7 +23,7 @@ export default function PopUpLayout({ open }: { open: boolean }) {
     <Modal open={open} onClose={() => setPopupOpen(false)}>
       <Box sx={popupStyles.modal}>
         <Typography variant="h6" component="h2" sx={{ textAlign: 'center' }}>
-          Edificio seleccionado: {String(selectedFeatureProperties?.id ?? 'Sin datos')}
+          Edificio seleccionado: {String(selectedFeatureProperties?.ogc_fid ?? 'Sin datos')}
         </Typography>
 
         <Box sx={popupStyles.boxMain}>
@@ -68,6 +69,26 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             </Button>
           </Box>
 
+          {(activeTab === 'uso' || activeTab === 'resumen') && (
+            <Box sx={popupStyles.boxMain}>
+              <Select value="uso" label="Uso constructivo">
+                <MenuItem value="osm" selected>
+                  OpenStreetMap
+                </MenuItem>
+                <MenuItem value="google-sat">Google Satélite</MenuItem>
+                <MenuItem value="google-hyb">Google Satélite Híbrido</MenuItem>
+              </Select>
+
+              <Box className="riesgoPopUp" sx={popupStyles.riesgoPopUp}>
+                Clasificación preliminar
+              </Box>
+
+              <IconButton color="primary" aria-label="add to shopping cart">
+                <MailIcon />
+              </IconButton>
+            </Box>
+          )}
+
           <Box
             className="riesgoPopUp"
             sx={{
@@ -90,7 +111,21 @@ export default function PopUpLayout({ open }: { open: boolean }) {
           {activeTab === 'edificio' && (
             <Box sx={popupStyles.bodyEdificioPopUp}>
               <Box className="imagen" sx={popupStyles.image}>
-                <img src={miImagen} alt="Descripción" style={{ height: '100%', width: '100%' }} />
+                <img
+                  src={String(selectedFeatureProperties?.documentlink)}
+                  alt="Descripción"
+                  style={{ height: '100%', width: '100%' }}
+                />
+                <Typography sx={{ mt: 1 }}>
+                  Fuente de la imagen:{' '}
+                  <Link href={String(selectedFeatureProperties?.documentlink)} target="_blank">
+                    Catastro
+                  </Link>{' '}
+                  Ver{' '}
+                  <Link href={String(selectedFeatureProperties?.informationsystem)} target="_blank">
+                    Ficha Catastral
+                  </Link>
+                </Typography>
               </Box>
               <Box className="datosEdificio" sx={popupStyles.data}>
                 <Box>

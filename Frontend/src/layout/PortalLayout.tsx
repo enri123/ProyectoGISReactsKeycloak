@@ -91,7 +91,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
               <div className="derecha" style={{ width: '30%', textAlign: 'right' }}>
                 <li>
                   <a
-                    href="https://enri123.github.io/portfolio-angular/es/home"
+                    href="https://github.com/enri123/ProyectoGISReactsKeycloak"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

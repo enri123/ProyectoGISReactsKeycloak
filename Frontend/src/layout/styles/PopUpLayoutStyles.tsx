@@ -63,4 +63,15 @@ export const popupStyles: Record<string, SxProps<Theme>> = {
     px: { xs: 0, sm: 2 },
     pt: { xs: 2, sm: 0 },
   },
+
+  riesgoPopUp: {
+    ml: 'auto',
+    px: 2,
+    py: 1,
+    borderRadius: 5,
+    backgroundColor: 'green',
+    color: '#3d2f00',
+    fontWeight: 700,
+    textTransform: 'capitalize',
+  },
 };

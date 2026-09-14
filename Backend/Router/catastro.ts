@@ -30,7 +30,11 @@ export async function catastroRoutes(app: FastifyInstance) {
         if (request.user.realm_access?.roles.includes('user_creation')) {
           result = await db.query(`
         SELECT
-            id,
+            ogc_fid,
+            informationsystem,
+            reference,
+            localid,
+            documentlink,
           municipality,
           riesgo,
             ST_AsGeoJSON(
@@ -46,10 +50,15 @@ export async function catastroRoutes(app: FastifyInstance) {
           console.log(`Municipality roles: ${municipalityRoles}`);
           console.log(`Entra en la api de catastro`);
 
+          // 4230
           result = await db.query(
             `
         SELECT
-            id,
+            ogc_fid,
+            informationsystem,
+            reference,
+            localid,
+            documentlink,
           municipality,
           riesgo,
             ST_AsGeoJSON(
@@ -68,7 +77,12 @@ export async function catastroRoutes(app: FastifyInstance) {
           type: 'Feature',
           geometry: row.geometry,
           properties: {
-            id: row.id,
+            ogc_fid: row.ogc_fid,
+            informationsystem: row.informationsystem,
+            reference: row.reference,
+            localid: row.localid,
+            documentlink: row.documentlink,
+
             municipality: row.municipality,
             riesgo: row.riesgo,
           },
