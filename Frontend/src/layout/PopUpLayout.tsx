@@ -75,7 +75,6 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             <Box sx={popupStyles.boxMain}>
               <Select
                 className="riesgoPopUp"
-                sx={popupStyles.riesgoPopUp}
                 label="Uso constructivo"
                 value={activeBuild}
                 onChange={(e) => setActiveBuild(e.target.value)}
