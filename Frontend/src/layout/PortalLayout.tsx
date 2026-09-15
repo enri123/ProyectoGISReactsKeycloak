@@ -90,11 +90,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
 
               <div className="derecha" style={{ width: '30%', textAlign: 'right' }}>
                 <li>
-                  <a
-                    href="https://github.com/enri123"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://github.com/enri123" target="_blank" rel="noopener noreferrer">
                     © Enrique Ruiz Tirado
                   </a>
                 </li>

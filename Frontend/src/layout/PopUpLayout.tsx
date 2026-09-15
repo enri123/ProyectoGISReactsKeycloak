@@ -10,7 +10,6 @@ export default function PopUpLayout({ open }: { open: boolean }) {
   const [activeTab, setActiveTab] = useState('edificio');
   const [activeBuild, setActiveBuild] = useState('osm');
 
-
   const riskColors: Record<string, string> = {
     nulo: 'rgba(128, 128, 128, 0.5)',
     bajo: 'rgba(46, 204, 113, 0.5)',
@@ -74,8 +73,16 @@ export default function PopUpLayout({ open }: { open: boolean }) {
 
           {(activeTab === 'uso' || activeTab === 'resumen' || activeTab === 'email') && (
             <Box sx={popupStyles.boxMain}>
-              <Select label="Uso constructivo" value={activeBuild} onChange={(e) => setActiveBuild(e.target.value)}> 
-                <MenuItem value="osm" selected>OpenStreetMap</MenuItem>
+              <Select
+                className="riesgoPopUp"
+                sx={popupStyles.riesgoPopUp}
+                label="Uso constructivo"
+                value={activeBuild}
+                onChange={(e) => setActiveBuild(e.target.value)}
+              >
+                <MenuItem value="osm" selected>
+                  OpenStreetMap
+                </MenuItem>
                 <MenuItem value="google-sat">Google Satélite</MenuItem>
                 <MenuItem value="google-hyb">Google Satélite Híbrido</MenuItem>
               </Select>
@@ -84,9 +91,9 @@ export default function PopUpLayout({ open }: { open: boolean }) {
                 Clasificación preliminar
               </Box>
 
-                <Button onClick={() => setActiveTab('email')} >
-                  <MailIcon />
-                </Button>
+              <Button onClick={() => setActiveTab('email')}>
+                <MailIcon />
+              </Button>
             </Box>
           )}
 
@@ -132,7 +139,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
                 <Box>
                   <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
                     <strong>Datos del Edificio </strong>
-                    <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                    <Link
+                      href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes"
+                      target="_blank"
+                    >
                       <HelpIcon />
                     </Link>
                   </Typography>
@@ -146,7 +156,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
                   </Typography>
                   <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
                     <strong>Usos presentes </strong>
-                    <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                    <Link
+                      href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes"
+                      target="_blank"
+                    >
                       <HelpIcon />
                     </Link>
                   </Typography>
@@ -159,7 +172,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
               <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
                 <strong>Informacion sobre el uso </strong>
-                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                <Link
+                  href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes"
+                  target="_blank"
+                >
                   <HelpIcon />
                 </Link>
               </Typography>
@@ -182,7 +198,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
               <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
                 <strong>Cálculo final del riesgo </strong>
-                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                <Link
+                  href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes"
+                  target="_blank"
+                >
                   <HelpIcon />
                 </Link>
               </Typography>
@@ -193,7 +212,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
               <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
                 <strong>Enviar mensaje al ayuntamiento </strong>
-                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                <Link
+                  href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes"
+                  target="_blank"
+                >
                   <HelpIcon />
                 </Link>
               </Typography>
