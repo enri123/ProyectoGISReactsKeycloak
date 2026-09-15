@@ -31,7 +31,6 @@ services:
       - ./Database/A.ES.SDGC.BU.Viveiro.building.gml:/data/Viveiro.gml:ro
       - ./Database/A.ES.SDGC.BU.Torremolinos.building.gml:/data/Torremolinos.gml:ro
       - ./Database/A.ES.SDGC.BU.Algeciras.building.gml:/data/Algeciras.gml:ro
-      - ./Database/A.ES.SDGC.BU.Madrid.building.gml:/data/Madrid.gml:ro
       - ./Database/A.ES.SDGC.BU.ElHierro.building.gml:/data/ElHierro.gml:ro
 
       - ./Database/02-load-buildings.sh:/02-load-buildings.sh:ro

@@ -51,11 +51,13 @@ export const popupStyles: Record<string, SxProps<Theme>> = {
   },
 
   boxMain: {
+    px: 2,
+    py: 1,
+    ml: 'auto',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
     gap: 1,
-    mt: 2,
   },
 
   datosEdificio: {

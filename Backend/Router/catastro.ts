@@ -30,11 +30,14 @@ export async function catastroRoutes(app: FastifyInstance) {
         if (request.user.realm_access?.roles.includes('user_creation')) {
           result = await db.query(`
         SELECT
-            ogc_fid,
-            informationsystem,
-            reference,
-            localid,
-            documentlink,
+          ogc_fid,
+          informationsystem,
+          reference,
+          localid,
+          documentlink,
+          numberofbuildingunits,
+          value,
+          beginning,
           municipality,
           riesgo,
             ST_AsGeoJSON(
@@ -58,7 +61,10 @@ export async function catastroRoutes(app: FastifyInstance) {
             informationsystem,
             reference,
             localid,
+            beginning,
+            numberofbuildingunits,
             documentlink,
+            value,
           municipality,
           riesgo,
             ST_AsGeoJSON(
@@ -78,11 +84,13 @@ export async function catastroRoutes(app: FastifyInstance) {
           geometry: row.geometry,
           properties: {
             ogc_fid: row.ogc_fid,
+            value: row.value,
+            beginning: row.beginning.split('-')[0],
             informationsystem: row.informationsystem,
             reference: row.reference,
+            numberofbuildingunits: row.numberofbuildingunits,
             localid: row.localid,
             documentlink: row.documentlink,
-
             municipality: row.municipality,
             riesgo: row.riesgo,
           },

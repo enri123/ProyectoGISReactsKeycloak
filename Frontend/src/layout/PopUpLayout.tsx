@@ -1,5 +1,6 @@
-import { Box, Button, Modal, Typography, Select, MenuItem, IconButton, Link } from '@mui/material';
+import { Box, Button, Modal, Typography, Select, MenuItem, Link } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
+import HelpIcon from '@mui/icons-material/Help';
 import { useState } from 'react';
 import { useLayout } from '../hooks/useLayoutContext';
 import { popupStyles } from './styles/PopUpLayoutStyles.tsx';
@@ -7,6 +8,8 @@ import { popupStyles } from './styles/PopUpLayoutStyles.tsx';
 export default function PopUpLayout({ open }: { open: boolean }) {
   const { selectedFeatureProperties, setPopupOpen } = useLayout();
   const [activeTab, setActiveTab] = useState('edificio');
+  const [activeBuild, setActiveBuild] = useState('osm');
+
 
   const riskColors: Record<string, string> = {
     nulo: 'rgba(128, 128, 128, 0.5)',
@@ -23,7 +26,7 @@ export default function PopUpLayout({ open }: { open: boolean }) {
     <Modal open={open} onClose={() => setPopupOpen(false)}>
       <Box sx={popupStyles.modal}>
         <Typography variant="h6" component="h2" sx={{ textAlign: 'center' }}>
-          Edificio seleccionado: {String(selectedFeatureProperties?.ogc_fid ?? 'Sin datos')}
+          Edificio seleccionado: {String(selectedFeatureProperties?.localid ?? 'Sin datos')}
         </Typography>
 
         <Box sx={popupStyles.boxMain}>
@@ -69,12 +72,10 @@ export default function PopUpLayout({ open }: { open: boolean }) {
             </Button>
           </Box>
 
-          {(activeTab === 'uso' || activeTab === 'resumen') && (
+          {(activeTab === 'uso' || activeTab === 'resumen' || activeTab === 'email') && (
             <Box sx={popupStyles.boxMain}>
-              <Select value="uso" label="Uso constructivo">
-                <MenuItem value="osm" selected>
-                  OpenStreetMap
-                </MenuItem>
+              <Select label="Uso constructivo" value={activeBuild} onChange={(e) => setActiveBuild(e.target.value)}> 
+                <MenuItem value="osm" selected>OpenStreetMap</MenuItem>
                 <MenuItem value="google-sat">Google Satélite</MenuItem>
                 <MenuItem value="google-hyb">Google Satélite Híbrido</MenuItem>
               </Select>
@@ -83,9 +84,9 @@ export default function PopUpLayout({ open }: { open: boolean }) {
                 Clasificación preliminar
               </Box>
 
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <MailIcon />
-              </IconButton>
+                <Button onClick={() => setActiveTab('email')} >
+                  <MailIcon />
+                </Button>
             </Box>
           )}
 
@@ -130,14 +131,24 @@ export default function PopUpLayout({ open }: { open: boolean }) {
               <Box className="datosEdificio" sx={popupStyles.data}>
                 <Box>
                   <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
-                    <strong>Datos del Edificio</strong>
+                    <strong>Datos del Edificio </strong>
+                    <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                      <HelpIcon />
+                    </Link>
                   </Typography>
                   <Typography sx={{ mt: 1 }}>
                     <strong>Municipio: </strong>
                     {String(selectedFeatureProperties?.municipality ?? 'Sin datos')}
                   </Typography>
+                  <Typography sx={{ mt: 1 }}>
+                    <strong>Ref. catastral parcela: </strong>
+                    {String(selectedFeatureProperties?.localid ?? 'Sin datos')}
+                  </Typography>
                   <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
-                    <strong>Usos presentes</strong>
+                    <strong>Usos presentes </strong>
+                    <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                      <HelpIcon />
+                    </Link>
                   </Typography>
                 </Box>
               </Box>
@@ -147,7 +158,22 @@ export default function PopUpLayout({ open }: { open: boolean }) {
           {activeTab === 'uso' && (
             <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
               <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
-                <strong>Informacion sobre el uso</strong>
+                <strong>Informacion sobre el uso </strong>
+                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                  <HelpIcon />
+                </Link>
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Numero de Locales: </strong>
+                {String(selectedFeatureProperties?.numberofbuildingunits ?? 'Sin datos')}
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Superficie: </strong>
+                {String(selectedFeatureProperties?.value ?? 'Sin datos')} m2
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Antigüedad: </strong>
+                {String(selectedFeatureProperties?.beginning ?? 'Sin datos')}
               </Typography>
             </Box>
           )}
@@ -155,7 +181,33 @@ export default function PopUpLayout({ open }: { open: boolean }) {
           {activeTab === 'resumen' && (
             <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
               <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
-                <strong>Cálculo final del riesgo</strong>
+                <strong>Cálculo final del riesgo </strong>
+                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                  <HelpIcon />
+                </Link>
+              </Typography>
+            </Box>
+          )}
+
+          {activeTab === 'email' && (
+            <Box className="datosEdificio" sx={popupStyles.datosEdificio}>
+              <Typography variant="h6" component="h4" sx={{ mt: 1 }}>
+                <strong>Enviar mensaje al ayuntamiento </strong>
+                <Link href="https://www.gisgal.com/accordions/censo-preliminar-de-amianto-preguntas-frecuentes" target="_blank" >
+                  <HelpIcon />
+                </Link>
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Numero de Locales: </strong>
+                {String(selectedFeatureProperties?.numberofbuildingunits ?? 'Sin datos')}
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Superficie: </strong>
+                {String(selectedFeatureProperties?.value ?? 'Sin datos')} m2
+              </Typography>
+              <Typography sx={{ mt: 1 }}>
+                <strong>Antigüedad: </strong>
+                {String(selectedFeatureProperties?.beginning ?? 'Sin datos')}
               </Typography>
             </Box>
           )}
